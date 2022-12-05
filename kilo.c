@@ -13,7 +13,7 @@ void enableRawMode() {
   atexit(disableRawMode);//call disableRawMode when the program exits
   
   struct termios raw = orig_termios;//modify values of original terminal attributes
-  raw.c_lflag &= ~(ECHO);//(Turn echoing off)
+  raw.c_lflag &= ~(ECHO | ICANON);//(Turn off echoing and canonical mode)
 
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);//pass modified attributes to tcsetattr
 }
