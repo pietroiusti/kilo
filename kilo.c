@@ -9,19 +9,19 @@ void disableRawMode() {
 }
 
 void enableRawMode() {
-  tcgetattr(STDIN_FILENO, &orig_termios);
-  atexit(disableRawMode);
+  tcgetattr(STDIN_FILENO, &orig_termios);//store current terminal attributes into global var orig_termios
+  atexit(disableRawMode);//call disableRawMode when the program exits
   
-  struct termios raw = orig_termios;
-  raw.c_lflag &= ~(ECHO);
+  struct termios raw = orig_termios;//modify values of original terminal attributes
+  raw.c_lflag &= ~(ECHO);//(Turn echoing off)
 
-  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
+  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);//pass modified attributes to tcsetattr
 }
 
 int main() {
   enableRawMode();
 
   char c;
-  while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q');
+  while (read(STDIN_FILENO, &c, 1) == 1 && c != 'q');//read 1 byte from stdin until...
   return 0; 
 }
